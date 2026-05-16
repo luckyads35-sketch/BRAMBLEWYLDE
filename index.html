@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="thicket">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BRAMBLEWYLDE · thorncraft · wild hedgerow</title>
+  <!-- Typography: rustic serif + weathered sans with bramble twine -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root[data-theme="thicket"] {
+      --bg: #0f120d;
+      --surface: #1c2218;
+      --surface-elevated: #2a3424;
+      --text: #ece8df;
+      --text-soft: #bdcaaa;
+      --text-muted: #556546;
+      --accent: #b4794b;
+      --accent-glow: #d69b68;
+      --accent-deep: #8e5934;
+      --accent-subtle: #3a4030;
+      --border-light: #4a5540;
+      --shadow-sm: 0 12px 28px -10px rgba(0,0,0,0.6);
+      --shadow-lg: 0 28px 45px -14px rgba(0,0,0,0.8);
+      --transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      --radius-card: 32px 4px 32px 4px;
+      --grid-gap: 1.8rem;
+    }
+
+    :root[data-theme="hedge"] {
+      --bg: #f2efea;
+      --surface: #ffffff;
+      --surface-elevated: #fefcf8;
+      --text: #2e3a24;
+      --text-soft: #6b7a58;
+      --text-muted: #cdd4be;
+      --accent: #bc8358;
+      --accent-glow: #d69f71;
+      --accent-deep: #9a643f;
+      --accent-subtle: #e6e0d4;
+      --border-light: #ddd7ca;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Quicksand', sans-serif;
+      scroll-behavior: smooth;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 20px; }
+
+    /* header — woven thorn */
+    .bramble-header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 18, 13, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 2px solid var(--accent);
+      transition: var(--transition);
+    }
+    [data-theme="hedge"] .bramble-header {
+      background: rgba(242, 239, 234, 0.96);
+      border-bottom-color: var(--accent);
+    }
+
+    .nav-bramble {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .brand-bramble {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent-glow);
+      text-transform: uppercase;
+      border-right: 3px solid var(--accent);
+      padding-right: 14px;
+    }
+    .brand-bramble span {
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      margin-left: 8px;
+      color: var(--text-soft);
+    }
+
+    .nav-bramble-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+    }
+    .nav-bramble-links a {
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .nav-bramble-links a:hover { color: var(--accent-glow); border-bottom: 2px dotted; padding-bottom: 2px; }
+
+    .bramble-utils {
+      display: flex;
+      gap: 1.4rem;
+      align-items: center;
+    }
+    #themeToggleBramble {
+      background: var(--accent-subtle);
+      border: none;
+      padding: 5px 12px;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .bramble-cart {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+    }
+    .cart-count-bramble {
+      background: var(--accent);
+      color: #0f120d;
+      font-size: 0.55rem;
+      font-weight: 800;
+      border-radius: 30px;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -14px;
+    }
+
+    /* hero — wild hedgerow */
+    .hero-thorn {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1441974231531-c622288dbd6f?q=80&w=2071&auto=format&fit=crop');
+      background-size: cover;
+      background-position: 50% 40%;
+    }
+    .hero-thorn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, #0f120dcc 0%, #1a2016bb 100%);
+      z-index: 1;
+    }
+    .hero-bramble-content {
+      position: relative;
+      z-index: 2;
+      max-width: 660px;
+      padding: 0 6%;
+    }
+    .hero-bramble-badge {
+      font-size: 0.6rem;
+      letter-spacing: 5px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--accent-glow);
+      border-left: 4px solid var(--accent);
+      padding-left: 14px;
+    }
+    .hero-bramble-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 12vw, 7rem);
+      font-weight: 700;
+      line-height: 1.0;
+      margin-bottom: 0.8rem;
+      color: #f0ede0;
+      letter-spacing: -1px;
+    }
+    .hero-bramble-offer {
+      font-size: 0.7rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      background: rgba(0,0,0,0.55);
+      display: inline-block;
+      padding: 0.45rem 1.2rem;
+      backdrop-filter: blur(4px);
+      border-radius: 60px;
+    }
+
+    .btn-bramble {
+      background: var(--accent);
+      border: none;
+      padding: 0.85rem 2.2rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-block;
+      text-decoration: none;
+      color: #0f120d;
+      border-radius: 60px;
+    }
+    .btn-bramble:hover {
+      background: var(--accent-glow);
+      transform: translateX(4px);
+    }
+
+    /* collection header */
+    .bramble-collection {
+      max-width: 1440px;
+      margin: 3rem auto 0.5rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.7rem;
+    }
+    .bramble-collection h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .bramble-collection p {
+      color: var(--accent-glow);
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+    }
+
+    /* product grid — thorn relic */
+    .grid-bramble {
+      max-width: 1440px;
+      margin: 2rem auto 5rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--grid-gap);
+    }
+
+    .bramble-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .bramble-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-glow);
+      box-shadow: var(--shadow-lg);
+    }
+    .bramble-media {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--surface-elevated);
+    }
+    .bramble-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .bramble-card:hover .bramble-media img { transform: scale(1.03); }
+    .bramble-quick {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(28, 34, 24, 0.94);
+      backdrop-filter: blur(8px);
+      padding: 0.8rem;
+      opacity: 0;
+      transition: 0.2s;
+      text-align: center;
+    }
+    .bramble-card:hover .bramble-quick { opacity: 1; }
+    .bramble-quick button {
+      background: var(--accent);
+      border: none;
+      width: 90%;
+      padding: 0.6rem;
+      font-size: 0.55rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #111;
+      border-radius: 60px;
+    }
+    .bramble-quick button:hover { background: white; color: #1c2218; }
+
+    .bramble-info {
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bramble-detail h4 {
+      font-size: 0.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-glow);
+      letter-spacing: 2px;
+    }
+    .bramble-detail h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .bramble-price { text-align: right; }
+    .bramble-current { font-weight: 800; font-size: 1rem; }
+    .bramble-old { font-size: 0.65rem; text-decoration: line-through; color: var(--text-muted); margin-left: 0.3rem; }
+
+    /* cart — hedgerow basket */
+    .cart-overlay-bramble {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.97);
+      backdrop-filter: blur(20px);
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s;
+    }
+    .cart-overlay-bramble.active { visibility: visible; opacity: 1; }
+    .cart-bramble-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 520px;
+      height: 100vh;
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      box-shadow: var(--shadow-lg);
+      z-index: 2001;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-overlay-bramble.active .cart-bramble-panel { transform: translateX(0); }
+    .cart-bramble-header {
+      padding: 1.4rem;
+      border-bottom: 1px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-bramble-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-glow);
+    }
+    .close-bramble-cart {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .cart-bramble-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .bramble-cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 0.8rem;
+      background: var(--surface-elevated);
+      border-left: 3px solid var(--accent);
+      position: relative;
+      border-radius: 28px;
+    }
+    .bramble-cart-img {
+      width: 70px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    .bramble-cart-details { flex: 1; }
+    .bramble-cart-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .bramble-cart-price { font-size: 0.75rem; color: var(--accent-glow); margin-top: 4px; }
+    .bramble-cart-qty {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .bramble-qty-btn {
+      background: var(--accent-subtle);
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bramble-qty-btn:hover { background: var(--accent); color: #111; }
+    .bramble-remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .cart-bramble-footer {
+      padding: 1.5rem;
+      border-top: 2px solid var(--accent);
+      background: var(--surface);
+    }
+    .bramble-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .bramble-checkout {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      padding: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      border-radius: 60px;
+      transition: 0.2s;
+      color: #0f120d;
+    }
+    .bramble-checkout:hover { background: var(--accent-glow); transform: scale(0.98);}
+    .empty-bramble-cart { text-align: center; color: var(--text-soft); padding: 2rem; font-size: 0.75rem;}
+
+    footer {
+      background: var(--surface-elevated);
+      margin-top: 2rem;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--accent);
+    }
+    .footer-bramble {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .footer-bramble-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-glow);
+    }
+    .footer-bramble-regions {
+      font-size: 0.5rem;
+      letter-spacing: 3px;
+      color: var(--text-soft);
+      margin: 0.6rem 0 1rem;
+    }
+
+    /* modal — thorn circle */
+    .modal-bramble {
+      position: fixed;
+      inset: 0;
+      z-index: 2200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.98);
+      backdrop-filter: blur(24px);
+      transition: opacity 0.25s;
+    }
+    .modal-bramble-block {
+      background: var(--surface);
+      max-width: 530px;
+      width: 100%;
+      border-radius: 60px 12px 60px 12px;
+      border-top: 5px solid var(--accent);
+      padding: 2rem 2rem 2.2rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 35px 45px rgba(0,0,0,0.8);
+    }
+    .modal-bramble-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .modal-bramble-icon {
+      width: 70px;
+      height: 70px;
+      background: rgba(180, 121, 75, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      border-radius: 60px;
+      border: 1px solid var(--accent);
+      color: var(--accent-glow);
+    }
+    .modal-bramble-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--accent-glow);
+      margin-bottom: 0.2rem;
+    }
+    .modal-bramble-desc {
+      color: var(--text-soft);
+      line-height: 1.5;
+      font-size: 0.85rem;
+      margin: 0.8rem 0;
+    }
+    .modal-bramble-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+    .btn-bramble-primary {
+      background: var(--accent);
+      border: none;
+      padding: 0.7rem 2rem;
+      font-weight: 800;
+      font-size: 0.7rem;
+      border-radius: 60px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: #0f120d;
+    }
+    .btn-bramble-secondary {
+      background: transparent;
+      border: 1px solid var(--accent);
+      padding: 0.7rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .modal-fade-bramble { opacity: 0; pointer-events: none; transition: opacity 0.2s; display: none; }
+
+    @media (max-width: 780px) {
+      .nav-bramble { flex-direction: column; gap: 0.6rem; }
+      .grid-bramble { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- entry modal: BRAMBLEWYLDE invitation -->
+<div id="entryModalBramble" class="modal-bramble">
+  <div class="modal-bramble-block">
+    <button id="closeBrambleModal" class="modal-bramble-close"><i class="fas fa-leaf"></i></button>
+    <div class="modal-bramble-icon"><i class="fas fa-thistle"></i></div>
+    <h2 class="modal-bramble-title">BRAMBLEWYLDE</h2>
+    <p class="modal-bramble-desc">Thorncraft · wild hedgerow · untamed resilience. Garments woven from bramble and ancient hedge-lore. Enter the wylnde.</p>
+    <div class="modal-bramble-buttons">
+      <button id="enterBrambleBtn" class="btn-bramble-primary">ENTER THE THICKET</button>
+      <button id="laterBrambleBtn" class="btn-bramble-secondary">WANDER LATER</button>
+    </div>
+  </div>
+</div>
+
+<header class="bramble-header">
+  <div class="nav-bramble">
+    <div class="brand-bramble">BRAMBLEWYLDE<span>· THORNCRAFT</span></div>
+    <nav class="nav-bramble-links">
+      <a href="#shopBramble">HEDGEROW</a>
+      <a href="#shopBramble">THORN</a>
+      <a href="#shopBramble">WYLDE</a>
+      <a href="#">BRAMBLE</a>
+    </nav>
+    <div class="bramble-utils">
+      <button id="themeToggleBramble">🌿 HEDGE MODE</button>
+      <div class="bramble-cart" id="cartIconBramble">
+        <i class="fas fa-branch"></i>
+        <span class="cart-count-bramble" id="cartCountBramble">0</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero-thorn">
+    <div class="hero-bramble-content">
+      <div class="hero-bramble-badge">WILD · THORN-WOVEN · UNTAMED</div>
+      <h1 class="hero-bramble-title">BRAMBLEWYLDE</h1>
+      <div class="hero-bramble-offer">First threshing: <strong>15% off</strong> your first hedgerow relic</div>
+      <a href="#shopBramble" class="btn-bramble">ENTER THORNCRAFT →</a>
+    </div>
+  </section>
+
+  <div class="bramble-collection" id="shopBramble">
+    <h2>Hedgerow Archive · Thorn Woven</h2>
+    <p>12 wild artifacts</p>
+  </div>
+
+  <div class="grid-bramble" id="productGridBramble"></div>
+</main>
+
+<footer>
+  <div class="footer-bramble">
+    <div class="footer-bramble-brand">BRAMBLEWYLDE</div>
+    <div class="footer-bramble-regions">SHROUDED HEDGE · THORN WOOD · OLD GROVES</div>
+    <p style="font-size:0.55rem; opacity:0.7;">© 2026 BRAMBLEWYLDE — woven from thorns, carried by wildlings.</p>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div id="cartOverlayBramble" class="cart-overlay-bramble">
+  <div class="cart-bramble-panel">
+    <div class="cart-bramble-header">
+      <h3>🌿 BRAMBLE PACK</h3>
+      <button class="close-bramble-cart" id="closeCartBramble"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-bramble-items" id="cartItemsBramble">
+      <div class="empty-bramble-cart">Your pack is empty.<br>Add hedgerow gear.</div>
+    </div>
+    <div class="cart-bramble-footer" id="cartFooterBramble" style="display: none;">
+      <div class="bramble-total"><span>Total (USD)</span><span id="cartTotalBramble">$0</span></div>
+      <button class="bramble-checkout" id="checkoutBrambleBtn">🪶 THORN ORDER</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // BRAMBLEWYLDE collection — wild hedgerow artifacts
+  const brambleProducts = [
+    { id: 1201, name: "Hedge Cloak", category: "OUTER", original: 890, price: 756, img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=687&auto=format&fit=crop", alt: "cloak" },
+    { id: 1202, name: "Bramble Tunic", category: "TOPS", original: 325, price: 276, img: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=687&auto=format&fit=crop", alt: "tunic" },
+    { id: 1203, name: "Thornweave Shirt", category: "LAYER", original: 560, price: 476, img: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=715&auto=format&fit=crop", alt: "shirt" },
+    { id: 1204, name: "Wild Pants", category: "BOTTOMS", original: 450, price: 382, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600&auto=format&fit=crop", alt: "pants" },
+    { id: 1205, name: "Hawthorn Anorak", category: "KNIT", original: 770, price: 654, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=600&auto=format&fit=crop", alt: "anorak" },
+    { id: 1206, name: "Hedge Vest", category: "VEST", original: 400, price: 340, img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=687&auto=format&fit=crop", alt: "vest" },
+    { id: 1207, name: "Briar Smock", category: "SMOCK", original: 1020, price: 867, img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=687&auto=format&fit=crop", alt: "smock" },
+    { id: 1208, name: "Wylnde Coat", category: "COAT", original: 1350, price: 1147, img: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?q=80&w=2070&auto=format&fit=crop", alt: "coat" },
+    { id: 1209, name: "Crabapple Cargo", category: "BOTTOMS", original: 520, price: 442, img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=600&auto=format&fit=crop", alt: "cargo" },
+    { id: 1210, name: "Mossberry Hood", category: "HOODIE", original: 320, price: 272, img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=764&auto=format&fit=crop", alt: "hoodie" },
+    { id: 1211, name: "Old Hedge Duster", category: "OUTER", original: 1750, price: 1487, img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=688&auto=format&fit=crop", alt: "duster" },
+    { id: 1212, name: "Bramble Shacket", category: "SHIRT", original: 620, price: 527, img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=687&auto=format&fit=crop", alt: "shacket" }
+  ];
+
+  let cartBramble = [];
+
+  const cartOverlayBrambleDiv = document.getElementById('cartOverlayBramble');
+  const cartBrambleIcon = document.getElementById('cartIconBramble');
+  const closeCartBrambleBtn = document.getElementById('closeCartBramble');
+  const cartBrambleContainer = document.getElementById('cartItemsBramble');
+  const cartBrambleFooter = document.getElementById('cartFooterBramble');
+  const cartBrambleTotalSpan = document.getElementById('cartTotalBramble');
+  const cartBrambleCountSpan = document.getElementById('cartCountBramble');
+
+  function persistBrambleCart() { localStorage.setItem('BRAMBLEWYLDE_CART', JSON.stringify(cartBramble)); }
+  function loadBrambleCart() {
+    const saved = localStorage.getItem('BRAMBLEWYLDE_CART');
+    if (saved) cartBramble = JSON.parse(saved);
+    renderBrambleCart();
+    updateBrambleCount();
+  }
+  function updateBrambleCount() { cartBrambleCountSpan.innerText = cartBramble.reduce((sum,i)=>sum+i.qty,0); }
+
+  function renderBrambleCart() {
+    if (!cartBrambleContainer) return;
+    if (cartBramble.length === 0) {
+      cartBrambleContainer.innerHTML = '<div class="empty-bramble-cart">Your pack is empty.<br>Add hedgerow gear.</div>';
+      cartBrambleFooter.style.display = 'none';
+      updateBrambleCount(); persistBrambleCart(); return;
+    }
+    cartBrambleFooter.style.display = 'block';
+    let html = ''; let total = 0;
+    cartBramble.forEach(item => {
+      total += item.price * item.qty;
+      html += `<div class="bramble-cart-item" data-id="${item.id}">
+          <img class="bramble-cart-img" src="${item.img}" alt="${item.name}">
+          <div class="bramble-cart-details">
+            <div class="bramble-cart-name">${item.name}</div>
+            <div class="bramble-cart-price">$${item.price.toLocaleString()}</div>
+            <div class="bramble-cart-qty">
+              <button class="bramble-qty-dec" data-id="${item.id}">−</button>
+              <span>${item.qty}</span>
+              <button class="bramble-qty-inc" data-id="${item.id}">+</button>
+            </div>
+          </div>
+          <button class="bramble-remove" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+        </div>`;
+    });
+    cartBrambleContainer.innerHTML = html;
+    cartBrambleTotalSpan.innerText = `$${total.toLocaleString()}`;
+    document.querySelectorAll('.bramble-qty-dec').forEach(btn => btn.addEventListener('click', () => updateBrambleQty(parseInt(btn.dataset.id), -1)));
+    document.querySelectorAll('.bramble-qty-inc').forEach(btn => btn.addEventListener('click', () => updateBrambleQty(parseInt(btn.dataset.id), 1)));
+    document.querySelectorAll('.bramble-remove').forEach(btn => btn.addEventListener('click', () => removeBrambleItem(parseInt(btn.dataset.id))));
+    updateBrambleCount(); persistBrambleCart();
+  }
+  function updateBrambleQty(pid, delta) {
+    const idx = cartBramble.findIndex(i=>i.id===pid);
+    if(idx !== -1){
+      const nq = cartBramble[idx].qty + delta;
+      if(nq <= 0) cartBramble.splice(idx,1);
+      else cartBramble[idx].qty = nq;
+      renderBrambleCart();
+    }
+  }
+  function removeBrambleItem(pid){ cartBramble = cartBramble.filter(i=>i.id!==pid); renderBrambleCart(); }
+  function addToBrambleCart(pid){
+    const prod = brambleProducts.find(p=>p.id===pid);
+    if(!prod) return;
+    const existing = cartBramble.find(i=>i.id===pid);
+    if(existing) existing.qty += 1;
+    else cartBramble.push({id:prod.id, name:prod.name, price:prod.price, qty:1, img:prod.img});
+    renderBrambleCart();
+    const btn = document.querySelector(`.bramble-add-${pid}`);
+    if(btn){ let old = btn.innerText; btn.innerText="✓ ADDED"; setTimeout(()=>btn.innerText=old,700); }
+    cartOverlayBrambleDiv.classList.add('active');
+  }
+
+  function renderBrambleProducts() {
+    const container = document.getElementById('productGridBramble');
+    if(!container) return;
+    container.innerHTML = '';
+    brambleProducts.forEach(p => {
+      const disc = Math.round(((p.original-p.price)/p.original)*100);
+      const card = document.createElement('div');
+      card.className = 'bramble-card';
+      card.innerHTML = `
+        <div class="bramble-media">
+          <img src="${p.img}" alt="${p.alt||p.name}" loading="lazy">
+          <div class="bramble-quick"><button class="bramble-add-${p.id} add-bramble-btn" data-id="${p.id}">🌿 ADD TO PACK</button></div>
+        </div>
+        <div class="bramble-info">
+          <div class="bramble-detail"><h4>${p.category}</h4><h3>${p.name}</h3></div>
+          <div class="bramble-price"><span class="bramble-current">$${p.price.toLocaleString()}</span><span class="bramble-old">$${p.original.toLocaleString()}</span><span style="font-size:0.55rem;color:var(--accent-glow);display:block;text-align:right;">-${disc}%</span></div>
+        </div>`;
+      container.appendChild(card);
+    });
+    document.querySelectorAll('.add-bramble-btn').forEach(btn => btn.addEventListener('click', (e)=>{ e.preventDefault(); addToBrambleCart(parseInt(btn.dataset.id)); }));
+  }
+
+  function initThemeBramble() {
+    const stored = localStorage.getItem('BRAMBLEWYLDE-theme');
+    let theme = stored || 'thicket';
+    document.documentElement.setAttribute('data-theme', theme);
+    const toggle = document.getElementById('themeToggleBramble');
+    if(toggle) toggle.textContent = theme === 'thicket' ? '🌿 HEDGE MODE' : '🍂 THICKET MODE';
+  }
+  function toggleThemeBramble() {
+    const curr = document.documentElement.getAttribute('data-theme');
+    const next = curr === 'thicket' ? 'hedge' : 'thicket';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('BRAMBLEWYLDE-theme', next);
+    const toggleBtn = document.getElementById('themeToggleBramble');
+    if(toggleBtn) toggleBtn.textContent = next === 'thicket' ? '🌿 HEDGE MODE' : '🍂 THICKET MODE';
+  }
+
+  // modal handlers
+  const modalBrambleElem = document.getElementById('entryModalBramble');
+  const enterBramble = document.getElementById('enterBrambleBtn'), laterBramble = document.getElementById('laterBrambleBtn'), closeBrambleModalBtn = document.getElementById('closeBrambleModal');
+  function closeBrambleModalFunc() {
+    if(modalBrambleElem){
+      modalBrambleElem.classList.add('modal-fade-bramble');
+      setTimeout(()=>modalBrambleElem.style.display='none',200);
+    }
+  }
+  if(enterBramble) enterBramble.addEventListener('click', closeBrambleModalFunc);
+  if(laterBramble) laterBramble.addEventListener('click', closeBrambleModalFunc);
+  if(closeBrambleModalBtn) closeBrambleModalBtn.addEventListener('click', closeBrambleModalFunc);
+  if(modalBrambleElem) modalBrambleElem.addEventListener('click',(e)=>{ if(e.target===modalBrambleElem) closeBrambleModalFunc(); });
+
+  cartBrambleIcon?.addEventListener('click',()=>cartOverlayBrambleDiv.classList.add('active'));
+  closeCartBrambleBtn?.addEventListener('click',()=>cartOverlayBrambleDiv.classList.remove('active'));
+  cartOverlayBrambleDiv?.addEventListener('click',(e)=>{ if(e.target===cartOverlayBrambleDiv) cartOverlayBrambleDiv.classList.remove('active'); });
+  document.getElementById('checkoutBrambleBtn')?.addEventListener('click',()=>{ alert('Bramblewylde welcomes your tread. Your hedgerow order is sealed in thorns.'); cartBramble=[]; renderBrambleCart(); cartOverlayBrambleDiv.classList.remove('active'); });
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{ a.addEventListener('click',function(e){ const hash=this.getAttribute('href'); if(hash==="#") return; const sec=document.querySelector(hash); if(sec){ e.preventDefault(); sec.scrollIntoView({behavior:'smooth'}); } }); });
+
+  renderBrambleProducts();
+  initThemeBramble();
+  loadBrambleCart();
+  document.getElementById('themeToggleBramble')?.addEventListener('click', toggleThemeBramble);
+</script>
+</body>
+</html>
